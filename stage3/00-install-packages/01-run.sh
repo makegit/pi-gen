@@ -9,18 +9,30 @@ EOF
 
 
 on_chroot << EOF
-echo '#!/bin/bash
 
-file="/etc/salt/minion_id"
-if [ -f "$file" ]
+echo ' #!/bin/bash
+
+bootsaltmasterfile = "/boot/salt/master"
+
+bootsaltminionid = "/boot/salt/minion_id"
+
+if [ -f "$bootsaltmasterfile" ]
 then
-	echo "$file found."
+	echo "$bootsaltmasterfile found."
+	cp $bootsaltmasterfile /etc/salt/master
 else
-	echo "$file not found."
+	echo "$bootsaltmasterfile not found."
+fi
+
+if [ -f "$bootsaltminionid" ]
+then
+	echo "$bootsaltminionid ound."
+	cp $bootsaltminionid /etc/salt/master
+else
+	echo "$bootsaltminionid not found and generate new minionid."
 	uuid=$(uuidgen)
 	echo "raspberry_pi_3_09_2018_${uuid}" > /etc/salt/minion_id
-fi' > /saltminiongenid1.sh
+fi' > /saltminiongenid.sh
 
-mkdir /etc/salt
-echo "master: HOSTNAME" > /etc/salt/minion
+
 EOF
