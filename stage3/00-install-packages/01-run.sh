@@ -33,7 +33,13 @@ else
 	echo "$bootsaltminionid not found and generate new minionid."
 	uuid=$(uuidgen)
 	echo "raspberry_pi_3_09_2018_${uuid}" > /etc/salt/minion_id
-fi' > /etc/init.d/saltminiongenid.sh
+fi
+
+systemctl stop salt-minion
+systemctl start salt-minion
+
+
+' > /etc/init.d/saltminiongenid.sh
 
 chown root:root /etc/init.d/saltminiongenid.sh
 chmod +x /etc/init.d/saltminiongenid.sh
