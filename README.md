@@ -1,3 +1,17 @@
+# Raspberry pi  and SaltStack configuration management create image
+
+
+
+/stage3/00-install-packages/00-packages
+add to apt package salt-minion & uuid-runtime
+
+
+/stage3/00-install-packages/01-run.sh
+add chroot script add to linux filesystem tree.
+script make salt minion configuration to first boot.
+
+(idea /boot folder show in sd card confiduration in directly after image write, in Windows Explorer and notepad.)
+
 # pi-gen
 
 _Tool used to create the raspberrypi.org Raspbian images_
