@@ -10,6 +10,7 @@ EOF
 
 on_chroot << EOF
 
+
 echo ' #!/bin/bash
 
 bootsaltmasterfile = "/boot/salt/master"
@@ -32,7 +33,9 @@ else
 	echo "$bootsaltminionid not found and generate new minionid."
 	uuid=$(uuidgen)
 	echo "raspberry_pi_3_09_2018_${uuid}" > /etc/salt/minion_id
-fi' > /saltminiongenid.sh
+fi' > /etc/init.d/saltminiongenid.sh
 
+chown root:root /etc/init.d/saltminiongenid.sh
+chmod +x /etc/init.d/saltminiongenid.sh
 
 EOF
