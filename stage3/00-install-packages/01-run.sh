@@ -9,39 +9,19 @@ EOF
 
 
 on_chroot << EOF
+mv /etc/salt /etc/_salt_org_bak
+
+mkdir /boot/salt
+ln -fs /boot/salt/ /etc/salt
+
+echo 'master: ' > /boot/salt/minion
+echo 'raspberrypi' > /boot/salt/minion_id
 
 
-echo ' #!/bin/bash
+mkdir /boot/start
+echo '#!/bin/bash' > /boot/start/start.sh
+chmod u+x /boot/start/start.sh
+(crontab -u root -l; echo "@reboot /boot/start/start.sh" ) | crontab -u root -
 
-bootsaltmasterfile = "/boot/salt/master"
-
-bootsaltminionid = "/boot/salt/minion_id"
-
-if [ -f "$bootsaltmasterfile" ]
-then
-	echo "$bootsaltmasterfile found."
-	cp $bootsaltmasterfile /etc/salt/master
-else
-	echo "$bootsaltmasterfile not found."
-fi
-
-if [ -f "$bootsaltminionid" ]
-then
-	echo "$bootsaltminionid ound."
-	cp $bootsaltminionid /etc/salt/master
-else
-	echo "$bootsaltminionid not found and generate new minionid."
-	uuid=$(uuidgen)
-	echo "raspberry_pi_3_09_2018_${uuid}" > /etc/salt/minion_id
-fi
-
-systemctl stop salt-minion
-systemctl start salt-minion
-
-
-' > /etc/init.d/saltminiongenid.sh
-
-chown root:root /etc/init.d/saltminiongenid.sh
-chmod +x /etc/init.d/saltminiongenid.sh
 
 EOF
